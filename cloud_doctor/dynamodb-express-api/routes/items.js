@@ -6,7 +6,7 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 router.get('/items', async (req, res) => {
     const params = {
-        TableName: 'databrew_patient',
+        TableName: 'real_databrew',
     };
 
     try {

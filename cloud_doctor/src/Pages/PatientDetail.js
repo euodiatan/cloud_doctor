@@ -1,31 +1,71 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Container, Paper } from '@mui/material';
+import { AppBar, Toolbar, Typography, Container, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
-const patients = [
-  { id: 1, name: 'John Doe', age: 30, details: 'Patient details here...' },
-  { id: 2, name: 'Jane Doe', age: 25, details: 'Patient details here...' },
-  // Add more patients as needed
-];
 
 function PatientDetail() {
-  const { id } = useParams();
-  const patient = patients.find((p) => p.id === parseInt(id));
+  const { name } = useParams();
+  const decodedName = decodeURIComponent(name);
+
+  const [patient, setPatient] = useState(null);
+  const [patientDetails, setPatientDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
+        // Using the patient's name to fetch details. Update the endpoint as needed.
+        const response = await axios.get(`http://localhost:3001/items?name=${decodedName}`);
+        const patientData = response.data.find(p => p['Patient Name'] === name);
+        if (patientData) {
+          setPatient(patientData);
+          setPatientDetails(response.data); 
+          console.log(response.data)
+        }
+      } catch (error) {
+        console.error('Error fetching patient details:', error);
+      }
+    };
+
+    fetchPatientDetails();
+  }, [name]);
 
   if (!patient) {
-    return <div>Patient not found</div>;
+    return <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }}>
+    <CircularProgress />
+    </Box>;
   }
 
   return (
     <div>
-      <AppBar position="static">
+      <AppBar style={{ backgroundColor: '#FFFFFF' }} position="static">
         <Toolbar>
-          <Typography variant="h6">{patient.name}'s Details</Typography>
+        <div style={{ flexGrow: 0.5 }} />
+          <Typography variant="body1" style={{ fontWeight:'bold' ,color:'#858585'}}>{patient['Patient Name']}'s Details</Typography>
         </Toolbar>
       </AppBar>
       <Container>
         <Paper style={{ padding: '20px', marginTop: '20px' }}>
-          <Typography variant="body1">{patient.details}</Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell style={{fontWeight:'bold'}}>Date</TableCell>
+                <TableCell style={{fontWeight:'bold'}}>Time</TableCell>
+                <TableCell style={{fontWeight:'bold'}}>Heart Rate (per minute)</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {patientDetails.map((detail, index) => (
+                <TableRow key={index}>
+                  <TableCell>{detail.Date}</TableCell>
+                  <TableCell>{detail.Time}</TableCell>
+                  <TableCell>{detail['Heart Rate Data per minute']}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Paper>
       </Container>
     </div>

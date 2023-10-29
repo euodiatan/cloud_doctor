@@ -4,7 +4,7 @@ import './App.css';
 import Test from './Pages/Dashboard'
 import LoginPage from './Pages/Login'
 import Dashboard from './Pages/Dashboard'
-import PatientData from './Pages/PatientDetail'
+import PatientDetail from './Pages/PatientDetail'
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/patient/:id" element={<PatientData />} />
+            <Route path="/patient/:name" element={<PatientDetail />}  />
             <Route path="/" element={<Dashboard />} />
             {/* Add more routes as needed */}
           </Routes>

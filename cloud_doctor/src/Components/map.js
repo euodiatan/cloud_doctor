@@ -6,6 +6,22 @@ import singaporeHigh from '../singaporeHigh.ts'; // Adjust the path accordingly
 
 am4core.useTheme(am4themes_animated);
 
+const markers = [
+    { lat: 1.322790, lon: 103.815150, name: "Tan Li Shan", address: "Blk 732, Bukit Timah Road, Singapore 972397" },
+    { lat: 1.312890, lon: 103.923950, name: "Lee Kai Xin", address: "Blk 889, East Coast Road, Singapore 557329" },
+    { lat: 1.316930, lon: 103.859470, name: "Goh Yan Ting", address: "Blk 809, Serangoon Road, Singapore 848770" },
+    { lat: 1.347550, lon: 103.717770, name: "Wong Jun Jie", address: "Blk 898, Jurong West St 52, Singapore 438891" },
+    { lat: 1.327120, lon: 103.783800, name: "Teo Jun Jie", address: "Blk 250, Holland Road, Singapore 337199" },
+    { lat: 1.3311344, lon: 103.9255844, name: "Ong Li Shan", address: "Blk 592, Bedok North St 2, Singapore 889773" },
+    { lat: 1.3194175, lon: 103.8172547, name: "Chua Kai Xin", address: "Blk 320, Bukit Timah Road, Singapore 784810" },
+    { lat: 1.3092795, lon: 103.7896931, name: "Koh Kai Xin", address: "Blk 416, Holland Road, Singapore 795293" },
+    { lat: 1.30944, lon: 103.86444, name: "Ong Yan Ting", address: "Blk 600, Jalan Besar, Singapore 324466" },
+    { lat: 1.30944, lon: 103.86444, name: "Wong Li Shan", address: "Blk 263, Jalan Besar, Singapore 785353" },
+
+
+
+];
+
 export default function SingaporeMap() {
   useEffect(() => {
     let map = am4core.create("chartdiv", am4maps.MapChart);
@@ -17,23 +33,33 @@ export default function SingaporeMap() {
 
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = "{name}";
-    polygonTemplate.fill = am4core.color("#74B266");
+    polygonTemplate.fill = am4core.color("#8dd2f2");
 
     let hs = polygonTemplate.states.create("hover");
     hs.properties.fill = am4core.color("#367B25");
 
-    // Assuming "SG" is the ID for Singapore in your map data
-    const singapore = polygonSeries.getPolygonById("SG");
-    if (singapore) {
-      map.zoomToMapObject(singapore);
-    } else {
-      console.error("Singapore polygon not found");
-    }
+
+
+    let imageSeries = map.series.push(new am4maps.MapImageSeries());
+    let imageSeriesTemplate = imageSeries.mapImages.template;
+    imageSeriesTemplate.propertyFields.latitude = "lat";
+    imageSeriesTemplate.propertyFields.longitude = "lon";
+    imageSeriesTemplate.nonScaling = true;
+
+    let markerCircle = imageSeriesTemplate.createChild(am4core.Circle);
+    markerCircle.radius = 10;
+    markerCircle.fill = am4core.color("#4c94b5"); // Set the color of the circle
+    markerCircle.stroke = am4core.color("#ffffff"); // Set the stroke (border) color
+    markerCircle.strokeWidth = 2;
+    markerCircle.toFront();
+
+    imageSeriesTemplate.tooltipText = "{name}: {address}";
+    imageSeries.data = markers;
 
     return () => {
       map.dispose();
     };
   }, []);
 
-  return <div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>;
+  return <div id="chartdiv" style={{ width: "100%", height: "400px" }}></div>;
 }
