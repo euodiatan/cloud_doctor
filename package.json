@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "@amcharts/amcharts4": "^4.10.38",
+    "chart.js": "^4.4.0",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "chartjs-plugin-zoom": "^2.0.1",
     "react-router-dom": "^6.17.0"
   }
 }

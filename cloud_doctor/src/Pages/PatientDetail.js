@@ -12,7 +12,10 @@ function PatientDetail() {
 
   const [patient, setPatient] = useState(null);
   const [patientDetails, setPatientDetails] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [heartRateChart, setHeartRateChart] = useState(null);
 
+  
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {

@@ -9,9 +9,15 @@ router.get('/items', async (req, res) => {
         TableName: 'real_databrew',
     };
 
+    let items = [];
     try {
-        const data = await dynamoDB.scan(params).promise();
-        res.json(data.Items);
+        do {
+            const data = await dynamoDB.scan(params).promise();
+            items = items.concat(data.Items);
+            params.ExclusiveStartKey = data.LastEvaluatedKey;
+        } while (typeof params.ExclusiveStartKey !== "undefined");
+
+        res.json(items);
     } catch (error) {
         console.error('Error fetching items:', error);
         res.status(500).json({ error: 'Cannot fetch items' });

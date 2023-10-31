@@ -38,23 +38,30 @@ export default function SingaporeMap() {
     let hs = polygonTemplate.states.create("hover");
     hs.properties.fill = am4core.color("#367B25");
 
+    function getMarkerColor(name) {
+        if (name === "Koh Kai Xin" || name === "Tan Li Shan") {
+          return am4core.color("#FF0000"); // Red color for specific patients
+        } else {
+          return am4core.color("#4c94b5"); // Default color for other patients
+        }
+      }
 
-
-    let imageSeries = map.series.push(new am4maps.MapImageSeries());
-    let imageSeriesTemplate = imageSeries.mapImages.template;
-    imageSeriesTemplate.propertyFields.latitude = "lat";
-    imageSeriesTemplate.propertyFields.longitude = "lon";
-    imageSeriesTemplate.nonScaling = true;
-
-    let markerCircle = imageSeriesTemplate.createChild(am4core.Circle);
-    markerCircle.radius = 10;
-    markerCircle.fill = am4core.color("#4c94b5"); // Set the color of the circle
-    markerCircle.stroke = am4core.color("#ffffff"); // Set the stroke (border) color
-    markerCircle.strokeWidth = 2;
-    markerCircle.toFront();
+      let imageSeries = map.series.push(new am4maps.MapImageSeries());
+      let imageSeriesTemplate = imageSeries.mapImages.template;
+      imageSeriesTemplate.propertyFields.latitude = "lat";
+      imageSeriesTemplate.propertyFields.longitude = "lon";
+      imageSeriesTemplate.propertyFields.fill = "color"; 
+      imageSeriesTemplate.nonScaling = true;
+      
+      let markerCircle = imageSeriesTemplate.createChild(am4core.Circle);
+      markerCircle.radius = 10;
+      markerCircle.stroke = am4core.color("#FFFFFF"); 
+      markerCircle.strokeWidth = 2;
+      
+     
+      imageSeries.data = markers.map(marker => ({ ...marker, color: getMarkerColor(marker.name) }));
 
     imageSeriesTemplate.tooltipText = "{name}: {address}";
-    imageSeries.data = markers;
 
     return () => {
       map.dispose();
