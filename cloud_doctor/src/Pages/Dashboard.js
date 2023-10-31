@@ -199,20 +199,38 @@ function Dashboard() {
                     </TableCell>
                   </TableRow>
                 ) : (
-              patients.map((patient) => (
-                <TableRow key={patient['Patient Name']}>
-                  <TableCell component="th" scope="row">
-                  <button style={{backgroundColor:'white', borderColor:'lightgray'}}onClick={() => handlePatientSelection(patient['Patient Name'])}>
-                    {patient['Patient Name']}
-                  </button>
-                  </TableCell>
-                  <TableCell>{`${patient['Device Number']}`}</TableCell>
-                  <TableCell style={{ color: patient['Heart Disease Risk'] === 'Low' ? 'green' : patient['Heart Disease Risk'] === 'High' ? 'red' : 'white' }}>
-                    {`${patient['Heart Disease Risk']}`}
-                  </TableCell>
-                </TableRow>
-              ))
-              )}
+                    patients
+                      .slice() // Create a shallow copy of the array to avoid mutating the original array
+                      .sort((a, b) => {
+                        if (a['Heart Disease Risk'] === 'High' && b['Heart Disease Risk'] !== 'High') {
+                          return -1; // a should come before b
+                        }
+                        if (b['Heart Disease Risk'] === 'High' && a['Heart Disease Risk'] !== 'High') {
+                          return 1; // b should come before a
+                        }
+                        return 0; // a and b are equal in terms of priority
+                      })
+                      .map((patient) => (
+                        <TableRow key={patient['Patient Name']}>
+                          <TableCell component="th" scope="row">
+                            <button
+                              style={{ backgroundColor: 'white', borderColor: 'lightgray' }}
+                              onClick={() => handlePatientSelection(patient['Patient Name'])}
+                            >
+                              {patient['Patient Name']}
+                            </button>
+                          </TableCell>
+                          <TableCell>{`${patient['Device Number']}`}</TableCell>
+                          <TableCell
+                            style={{
+                              color: patient['Heart Disease Risk'] === 'Low' ? 'green' : patient['Heart Disease Risk'] === 'High' ? 'red' : 'white',
+                            }}
+                          >
+                            {`${patient['Heart Disease Risk']}`}
+                          </TableCell>
+                        </TableRow>
+                      )))}
+                
             </TableBody>
           </Table>
           </TableContainer>
