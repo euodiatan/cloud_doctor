@@ -12,7 +12,7 @@ function LoginPage() {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
+      {/* <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
         <label>
           Email:
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
@@ -22,7 +22,8 @@ function LoginPage() {
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
         </label>
         <input type="submit" value="Login" />
-      </form>
+      </form> */}
+      You have signed out!
     </div>
   );
 }
