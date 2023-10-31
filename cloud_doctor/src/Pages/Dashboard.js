@@ -152,7 +152,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/items');
+        const response = await axios.get('/items');
         setUnfilteredPatients(response.data);
         const uniquePatients = getUniquePatients(response.data);
         setPatients(uniquePatients);
