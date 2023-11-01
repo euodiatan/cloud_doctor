@@ -13,7 +13,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import docImage from '../Images/doc.jpg';
 import SingaporeMap from '../Components/map';
-import axios from 'axios';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import 'chartjs-plugin-zoom';
@@ -152,9 +151,13 @@ function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://18.142.230.1:3001/items');
-        setUnfilteredPatients(response.data);
-        const uniquePatients = getUniquePatients(response.data);
+        const response = await fetch('http://18.142.230.1:3001/items');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setUnfilteredPatients(data);
+        const uniquePatients = getUniquePatients(data);
         setPatients(uniquePatients);
       } catch (error) {
         console.error('Error fetching patient data:', error);
