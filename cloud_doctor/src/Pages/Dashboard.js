@@ -38,9 +38,9 @@ function Dashboard() {
   const timeRanges = [
     { label: '10:00 AM - 11:00 AM', start: '2023-01-01 10:00:00.0', end: '2023-01-01 11:00:00.0' },
     { label: '11:00 AM - 12:00 PM', start: '2023-01-01 11:00:00.0', end: '2023-01-01 12:00:00.0' },
-    { label: '12:00 AM - 13:00 PM', start: '2023-01-01 12:00:00.0', end: '2023-01-01 13:00:00.0' },
-    { label: '13:00 AM - 14:00 PM', start: '2023-01-01 13:00:00.0', end: '2023-01-01 14:00:00.0' },
-    { label: '15:00 AM - 16:00 PM', start: '2023-01-01 15:00:00.0', end: '2023-01-01 16:00:00.0' },
+    { label: '12:00 PM - 13:00 PM', start: '2023-01-01 12:00:00.0', end: '2023-01-01 13:00:00.0' },
+    { label: '13:00 PM - 14:00 PM', start: '2023-01-01 13:00:00.0', end: '2023-01-01 14:00:00.0' },
+    { label: '15:00 PM - 16:00 PM', start: '2023-01-01 15:00:00.0', end: '2023-01-01 16:00:00.0' },
     // Add more time ranges as needed
   ];
 
@@ -50,7 +50,7 @@ function Dashboard() {
   const [unfilteredPatients, setUnfilteredPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [heartRateChart, setHeartRateChart] = useState(null);
-
+  
   useEffect(() => {
     initializeHeartRateChart();
     updateTimeRange(defaultTimeRange.start, defaultTimeRange.end, defaultTimeRange.label);
